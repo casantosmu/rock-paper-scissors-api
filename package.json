@@ -8,7 +8,8 @@
     "ts:dev": "tsc -w",
     "build": "npm run ts",
     "start": "node .",
-    "start:dev": "nodemon -q"
+    "start:dev": "nodemon -q",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +36,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "nodemon": "^2.0.19",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "husky": "^8.0.0"
   }
 }
