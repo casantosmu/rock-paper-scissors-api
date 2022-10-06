@@ -1,14 +1,11 @@
 import "./loadEnvironment";
 import configs from "./configs/configs";
-import startServer from "./server/startServer";
 import server from "./server";
+import startServer from "./server/startServer";
+
+import startSocket from "./server/startSocket";
 
 const port = configs.env.port || 5000;
 
-(async () => {
-  try {
-    await startServer(server, port);
-  } catch {
-    process.exit(1);
-  }
-})();
+startSocket(server);
+startServer(server, port);
