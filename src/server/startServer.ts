@@ -5,23 +5,18 @@ import configs from "../configs/configs";
 
 const debug = Debug("rock-paper-scissors:startServer");
 
-const startServer = (server: http.Server, port: number) =>
-  new Promise<void>((resolve, reject) => {
-    try {
-      server.listen(port, () => {
-        debug(
-          chalk.green(`Server listening on ${configs.env.hostName}:${port}`)
-        );
-        resolve();
-      });
+const startServer = (server: http.Server, port: number) => {
+  try {
+    server.listen(port, () => {
+      debug(chalk.green(`Server listening on ${configs.env.hostName}:${port}`));
+    });
 
-      server.on("error", (error) => {
-        throw new Error(error.message);
-      });
-    } catch (error) {
-      debug(chalk.red(`There was an error on the server: ${error}`));
-      reject();
-    }
-  });
+    server.on("error", (error) => {
+      throw new Error(error.message);
+    });
+  } catch (error) {
+    debug(chalk.red(`There was an error on the server: ${error}`));
+  }
+};
 
 export default startServer;
