@@ -10,6 +10,10 @@ const configs = {
       joinSucces: "join_game_success",
       joinError: "join_game_error",
     },
+    hand: {
+      update: "move_hand_update",
+      updated: "move_hand_updated",
+    },
   },
 } as const;
 
