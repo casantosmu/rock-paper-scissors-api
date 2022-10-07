@@ -3,6 +3,7 @@ import Debug from "debug";
 import http from "http";
 import { Server as SocketServer } from "socket.io";
 import configs from "../configs/configs";
+import updateHandController from "./controllers/moveController";
 import joinRoomController from "./controllers/roomController";
 
 const debug = Debug("rock-paper-scissors:start-socket");
@@ -21,6 +22,10 @@ const startSocket = (server: http.Server) => {
 
     socket.on(eventMessages.room.joinBase, (roomId: string) =>
       joinRoomController(socket, roomId)
+    );
+
+    socket.on(eventMessages.hand.update, (handName: string) =>
+      updateHandController(socket, handName)
     );
 
     socket.on("disconnect", () => {
