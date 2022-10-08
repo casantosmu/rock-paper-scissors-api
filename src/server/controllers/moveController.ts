@@ -1,14 +1,13 @@
 import { Socket } from "socket.io";
 import configs from "../../configs/configs";
+import getUserRoom from "../../utils/utils";
 
 const { eventMessages } = configs;
 
 const updateHandController = async (socket: Socket, handName: string) => {
-  const firstRoom = 1;
+  const userRoom = getUserRoom(socket.rooms);
 
-  const roomId = [...socket.rooms][firstRoom];
-
-  socket.to(roomId).emit(eventMessages.hand.updated, handName);
+  socket.to(userRoom).emit(eventMessages.hand.updated, handName);
 };
 
 export default updateHandController;
