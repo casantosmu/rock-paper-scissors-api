@@ -5,7 +5,5 @@ import startServer from "./server/startServer";
 
 import startSocket from "./server/startSocket";
 
-const port = configs.env.port || 5000;
-
 startSocket(server);
-startServer(server, port);
+startServer(server, configs.env.port);

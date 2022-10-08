@@ -3,7 +3,7 @@ import chalk from "chalk";
 import Debug from "debug";
 import configs from "../../configs/configs";
 
-const { eventMessages } = configs;
+const { eventMessages, gameSettings } = configs;
 
 const joinRoomController = async (socket: Socket, roomId: string) => {
   const debug = Debug("rock-paper-scissors:controllers:join-game");
@@ -22,10 +22,9 @@ const joinRoomController = async (socket: Socket, roomId: string) => {
     return;
   }
 
-  const maxPlayers = 2;
-  const sockets = await socket.in(roomId).fetchSockets();
+  const socketsInRoom = (await socket.in(roomId).fetchSockets()).length;
 
-  if (sockets.length >= maxPlayers) {
+  if (socketsInRoom >= gameSettings.playersPerRoom) {
     socket.emit(eventMessages.room.joinError);
     debug(chalk.red(`Room ${roomId} is currently full`));
     return;
