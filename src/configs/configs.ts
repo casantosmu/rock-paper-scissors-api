@@ -3,6 +3,7 @@ const configs = {
     port: +process.env.PORT || 5000,
     hostName: process.env.HOST_NAME,
     frontendWebUrl: process.env.FRONTEND_WEB_URL,
+    mongoDbUrl: process.env.MONGO_DB_URL,
   },
   eventMessages: {
     room: {
