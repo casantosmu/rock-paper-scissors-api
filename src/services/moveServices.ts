@@ -1,7 +1,7 @@
 import { FilterQuery, UpdateQuery } from "mongoose";
 import configs from "../configs/configs";
 import Room from "../database/models/Room";
-import { RoomWithId } from "../types/interfaces";
+import { HandNames, RoomWithId } from "../types/interfaces";
 
 const { gameSettings } = configs;
 
@@ -11,9 +11,13 @@ const addUserWaiting = async (roomId: string, userId: string) => {
   });
 };
 
-const removeUserWaiting = async (roomId: string, userId: string) => {
+const addCurrentHand = async (
+  roomId: string,
+  userId: string,
+  handName: HandNames
+) => {
   await Room.findByIdAndUpdate(roomId, {
-    $pull: { usersWaiting: userId },
+    $addToSet: { currentHands: { userId, currentHand: handName } },
   });
 };
 
@@ -37,6 +41,6 @@ const uploadIsStarted = async (roomId: string) => {
 
 export default {
   addUserWaiting,
-  removeUserWaiting,
+  addCurrentHand,
   uploadIsStarted,
 };

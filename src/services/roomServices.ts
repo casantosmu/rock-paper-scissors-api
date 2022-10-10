@@ -12,4 +12,10 @@ const deleteRoom = async (roomId: string) => {
   await Room.findByIdAndDelete(roomId);
 };
 
-export default { createIfNotExists, deleteRoom };
+const removeUser = async (roomId: string, userId: string) => {
+  await Room.findByIdAndUpdate(roomId, {
+    $pull: { usersWaiting: userId, currentHands: { userId } },
+  });
+};
+
+export default { createIfNotExists, deleteRoom, removeUser };

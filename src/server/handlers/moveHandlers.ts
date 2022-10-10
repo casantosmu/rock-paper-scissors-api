@@ -1,15 +1,39 @@
 import configs from "../../configs/configs";
 import moveServices from "../../services/moveServices";
-import { SocketWithData } from "../../types/interfaces";
+import { HandNames, SocketWithData } from "../../types/interfaces";
+import isValidHandName from "../../utils/validation-utils";
 import generalErrorHandler from "./generalErrorHandler";
 
 const { eventNames } = configs;
 
 export const uploadHandHandler = async (
   socket: SocketWithData,
-  handName: string
+  handName: HandNames
 ) => {
-  socket.to(socket.data.activeRoomId).emit(eventNames.hand.updated, handName);
+  if (!isValidHandName(handName)) {
+    generalErrorHandler(
+      socket,
+      `${handName} is not a valid hand name`,
+      "handlers:upload-hand"
+    );
+    return;
+  }
+
+  try {
+    await moveServices.addCurrentHand(
+      socket.data.activeRoomId,
+      socket.id,
+      handName
+    );
+
+    socket.to(socket.data.activeRoomId).emit(eventNames.hand.updated, handName);
+  } catch (error) {
+    generalErrorHandler(
+      socket,
+      `Error adding waiting user ${socket.id} on ${socket.data.activeRoomId} room: ${error.message}`,
+      "handlers:upload-hand"
+    );
+  }
 };
 
 export const addUserWaitingHandler = async (socket: SocketWithData) => {
