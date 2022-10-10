@@ -10,6 +10,7 @@ const configs = {
       joinBase: "room:join",
       joinSucces: "room:join_success",
       joinError: "room:join_error",
+      generalError: "room:general_error",
     },
     hand: {
       update: "hand:update",
