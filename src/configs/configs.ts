@@ -18,6 +18,7 @@ const configs = {
       updated: "hand:updated",
     },
     move: {
+      starts: "move:starts",
       uploadUserWaiting: "move:upload_user_waiting",
     },
     predefined: {

@@ -2,8 +2,10 @@ import chalk from "chalk";
 import Debug from "debug";
 import configs from "../configs/configs";
 import { SocketWithData } from "../types/interfaces";
-import uploadHandHandler, {
+import {
   addUserWaitingHandler,
+  isStartedHandler,
+  uploadHandHandler,
 } from "./handlers/moveHandlers";
 import {
   disconnectRoomHandler,
@@ -23,6 +25,7 @@ const onConnectionSocket = (socket: SocketWithData) => {
 
   socket.on(eventNames.move.uploadUserWaiting, async () => {
     await addUserWaitingHandler(socket);
+    isStartedHandler(socket);
   });
 
   socket.on(eventNames.hand.update, (handName: string) =>
