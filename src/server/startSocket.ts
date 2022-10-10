@@ -7,7 +7,7 @@ import updateHandController from "./controllers/moveController";
 import joinRoomController from "./controllers/roomController";
 
 const debug = Debug("rock-paper-scissors:start-socket");
-const { eventMessages } = configs;
+const { eventNames } = configs;
 
 const startSocket = (server: http.Server) => {
   const io = new SocketServer(server, {
@@ -17,18 +17,18 @@ const startSocket = (server: http.Server) => {
     },
   });
 
-  io.on("connection", (socket) => {
+  io.on(eventNames.predefined.connection, (socket) => {
     debug(chalk.blueBright(`New socket connected: ${socket.id}`));
 
-    socket.on(eventMessages.room.joinBase, (roomId: string) =>
+    socket.on(eventNames.room.joinBase, (roomId: string) =>
       joinRoomController(socket, roomId)
     );
 
-    socket.on(eventMessages.hand.update, (handName: string) =>
+    socket.on(eventNames.hand.update, (handName: string) =>
       updateHandController(socket, handName)
     );
 
-    socket.on("disconnect", () => {
+    socket.on(eventNames.predefined.disconnect, () => {
       debug(chalk.blueBright(`Socket disconnected: ${socket.id}`));
     });
   });
