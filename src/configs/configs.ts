@@ -5,15 +5,19 @@ const configs = {
     frontendWebUrl: process.env.FRONTEND_WEB_URL,
     mongoDbUrl: process.env.MONGO_DB_URL,
   },
-  eventMessages: {
+  eventNames: {
     room: {
-      joinBase: "join_game",
-      joinSucces: "join_game_success",
-      joinError: "join_game_error",
+      joinBase: "room:join",
+      joinSucces: "room:join_success",
+      joinError: "room:join_error",
     },
     hand: {
-      update: "move_hand_update",
-      updated: "move_hand_updated",
+      update: "hand:update",
+      updated: "hand:updated",
+    },
+    predefined: {
+      connection: "connection",
+      disconnect: "disconnect",
     },
   },
   gameSettings: {
