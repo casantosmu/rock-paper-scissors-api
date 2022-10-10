@@ -5,7 +5,7 @@ import configs from "../../configs/configs";
 
 const { eventNames, gameSettings } = configs;
 
-const joinRoomController = async (socket: Socket, roomId: string) => {
+const joinRoomHandler = async (socket: Socket, roomId: string) => {
   const debug = Debug("rock-paper-scissors:controllers:join-game");
 
   if (!roomId) {
@@ -36,4 +36,4 @@ const joinRoomController = async (socket: Socket, roomId: string) => {
   debug(chalk.greenBright(`User ${socket.id} has joined to ${roomId}`));
 };
 
-export default joinRoomController;
+export default joinRoomHandler;
