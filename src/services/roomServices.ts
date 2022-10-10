@@ -8,4 +8,8 @@ const createIfNotExists = async (roomId: string) => {
   }
 };
 
-export default { createIfNotExists };
+const deleteRoom = async (roomId: string) => {
+  await Room.findByIdAndDelete(roomId);
+};
+
+export default { createIfNotExists, deleteRoom };

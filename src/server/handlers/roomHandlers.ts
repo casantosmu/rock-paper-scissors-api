@@ -4,10 +4,14 @@ import configs from "../../configs/configs";
 import roomServices from "../../services/roomServices";
 import { SocketWithData } from "../../types/interfaces";
 import getSocketsInRoom from "../../utils/socket-utils";
+import generalErrorHandler from "./generalErrorHandler";
 
 const { eventNames, gameSettings } = configs;
 
-const joinRoomHandler = async (socket: SocketWithData, roomId: string) => {
+export const joinRoomHandler = async (
+  socket: SocketWithData,
+  roomId: string
+) => {
   const debug = Debug("rock-paper-scissors:controllers:join-game");
 
   if (!roomId) {
@@ -48,4 +52,34 @@ const joinRoomHandler = async (socket: SocketWithData, roomId: string) => {
   socket.emit(eventNames.room.joinSucces);
 };
 
-export default joinRoomHandler;
+export const disconnectRoomHandler = async (socket: SocketWithData) => {
+  const debug = Debug("rock-paper-scissors:controllers:disconnect-room");
+
+  debug(chalk.blue(`Socket disconnected: ${socket.id}`));
+
+  const socketsInRoom = await getSocketsInRoom(
+    socket,
+    socket.data.activeRoomId
+  );
+
+  if (!socketsInRoom) {
+    try {
+      await roomServices.deleteRoom(socket.data.activeRoomId);
+
+      debug(chalk.blue(`Room ${socket.data.activeRoomId} has been removed`));
+      socket.emit(eventNames.room.closed);
+    } catch (error) {
+      generalErrorHandler(
+        socket,
+        `Error removing ${socket.data.activeRoomId} room: ${error.message}`,
+        "disconnect-room"
+      );
+    }
+
+    return;
+  }
+
+  if (socketsInRoom === gameSettings.minimumPlayers) {
+    socket.to(socket.data.activeRoomId).disconnectSockets();
+  }
+};
