@@ -1,7 +1,6 @@
 import chalk from "chalk";
 import Debug from "debug";
 import configs from "../../configs/configs";
-import moveServices from "../../services/moveServices";
 import roomServices from "../../services/roomServices";
 import { SocketWithData } from "../../types/interfaces";
 import getSocketsInRoom from "../../utils/socket-utils";
@@ -85,7 +84,7 @@ export const disconnectRoomHandler = async (socket: SocketWithData) => {
   }
 
   try {
-    await moveServices.removeUserWaiting(socket.data.activeRoomId, socket.id);
+    await roomServices.removeUser(socket.data.activeRoomId, socket.id);
   } catch (error) {
     generalErrorHandler(
       socket,

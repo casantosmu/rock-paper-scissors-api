@@ -11,12 +11,6 @@ const addUserWaiting = async (roomId: string, userId: string) => {
   });
 };
 
-const removeUserWaiting = async (roomId: string, userId: string) => {
-  await Room.findByIdAndUpdate(roomId, {
-    $pull: { usersWaiting: userId },
-  });
-};
-
 const addCurrentHand = async (
   roomId: string,
   userId: string,
@@ -47,7 +41,6 @@ const uploadIsStarted = async (roomId: string) => {
 
 export default {
   addUserWaiting,
-  removeUserWaiting,
   addCurrentHand,
   uploadIsStarted,
 };
