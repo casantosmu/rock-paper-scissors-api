@@ -5,7 +5,10 @@ import generalErrorHandler from "./generalErrorHandler";
 
 const { eventNames } = configs;
 
-const uploadHandHandler = async (socket: SocketWithData, handName: string) => {
+export const uploadHandHandler = async (
+  socket: SocketWithData,
+  handName: string
+) => {
   socket.to(socket.data.activeRoomId).emit(eventNames.hand.updated, handName);
 };
 
@@ -21,4 +24,21 @@ export const addUserWaitingHandler = async (socket: SocketWithData) => {
   }
 };
 
-export default uploadHandHandler;
+export const isStartedHandler = async (socket: SocketWithData) => {
+  try {
+    const isReadyToStart = await moveServices.uploadIsStarted(
+      socket.data.activeRoomId
+    );
+
+    if (isReadyToStart) {
+      socket.emit(eventNames.move.starts);
+      socket.to(socket.data.activeRoomId).emit(eventNames.move.starts);
+    }
+  } catch (error) {
+    generalErrorHandler(
+      socket,
+      `Failed to upload move starts on ${socket.data.activeRoomId} room: ${error.message}`,
+      "handlers:is-ready"
+    );
+  }
+};
