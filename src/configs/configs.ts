@@ -17,6 +17,9 @@ const configs = {
       update: "hand:update",
       updated: "hand:updated",
     },
+    move: {
+      uploadUserWaiting: "move:upload_user_waiting",
+    },
     predefined: {
       connection: "connection",
       disconnect: "disconnect",
