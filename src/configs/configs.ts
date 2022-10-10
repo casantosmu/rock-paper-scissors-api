@@ -22,6 +22,7 @@ const configs = {
   },
   gameSettings: {
     playersPerRoom: 2,
+    handNames: ["scissors", "paper", "rock"],
   },
 } as const;
 
