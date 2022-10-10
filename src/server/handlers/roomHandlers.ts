@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import Debug from "debug";
 import configs from "../../configs/configs";
+import moveServices from "../../services/moveServices";
 import roomServices from "../../services/roomServices";
 import { SocketWithData } from "../../types/interfaces";
 import getSocketsInRoom from "../../utils/socket-utils";
@@ -81,5 +82,15 @@ export const disconnectRoomHandler = async (socket: SocketWithData) => {
 
   if (socketsInRoom === gameSettings.minimumPlayers) {
     socket.to(socket.data.activeRoomId).disconnectSockets();
+  }
+
+  try {
+    await moveServices.removeUserWaiting(socket.data.activeRoomId, socket.id);
+  } catch (error) {
+    generalErrorHandler(
+      socket,
+      `Error removing user ${socket.id} from ${socket.data.activeRoomId} room: ${error.message}`,
+      "controllers:disconnect-room"
+    );
   }
 };
