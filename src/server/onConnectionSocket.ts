@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import Debug from "debug";
 import configs from "../configs/configs";
-import { SocketWithData } from "../types/interfaces";
+import { HandNames, SocketWithData } from "../types/interfaces";
 import {
   addUserWaitingHandler,
   isStartedHandler,
@@ -28,7 +28,7 @@ const onConnectionSocket = (socket: SocketWithData) => {
     isStartedHandler(socket);
   });
 
-  socket.on(eventNames.hand.update, (handName: string) =>
+  socket.on(eventNames.hand.update, (handName: HandNames) =>
     uploadHandHandler(socket, handName)
   );
 
