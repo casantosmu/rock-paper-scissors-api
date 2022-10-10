@@ -2,8 +2,8 @@ import chalk from "chalk";
 import Debug from "debug";
 import configs from "../configs/configs";
 import { SocketWithData } from "../types/interfaces";
-import updateHandController from "./controllers/moveController";
-import joinRoomController from "./controllers/roomController";
+import uploadHandHandler from "./handlers/moveHandlers";
+import joinRoomHandler from "./handlers/roomHandlers";
 
 const { eventNames } = configs;
 
@@ -13,11 +13,11 @@ const onConnectionSocket = (socket: SocketWithData) => {
   debug(chalk.blue(`New socket connected: ${socket.id}`));
 
   socket.on(eventNames.room.joinBase, (roomId: string) =>
-    joinRoomController(socket, roomId)
+    joinRoomHandler(socket, roomId)
   );
 
   socket.on(eventNames.hand.update, (handName: string) =>
-    updateHandController(socket, handName)
+    uploadHandHandler(socket, handName)
   );
 
   socket.on(eventNames.predefined.disconnect, () => {
