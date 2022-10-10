@@ -3,7 +3,10 @@ import Debug from "debug";
 import configs from "../configs/configs";
 import { SocketWithData } from "../types/interfaces";
 import uploadHandHandler from "./handlers/moveHandlers";
-import joinRoomHandler from "./handlers/roomHandlers";
+import {
+  disconnectRoomHandler,
+  joinRoomHandler,
+} from "./handlers/roomHandlers";
 
 const { eventNames } = configs;
 
@@ -21,7 +24,7 @@ const onConnectionSocket = (socket: SocketWithData) => {
   );
 
   socket.on(eventNames.predefined.disconnect, () => {
-    debug(chalk.blueBright(`Socket disconnected: ${socket.id}`));
+    disconnectRoomHandler(socket);
   });
 };
 

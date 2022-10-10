@@ -11,6 +11,7 @@ const configs = {
       joinSucces: "room:join_success",
       joinError: "room:join_error",
       generalError: "room:general_error",
+      closed: "room:closed",
     },
     hand: {
       update: "hand:update",
@@ -22,6 +23,7 @@ const configs = {
     },
   },
   gameSettings: {
+    minimumPlayers: 1,
     playersPerRoom: 2,
     handNames: ["scissors", "paper", "rock"],
   },
