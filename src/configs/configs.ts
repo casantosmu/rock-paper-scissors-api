@@ -20,6 +20,7 @@ const configs = {
     move: {
       starts: "move:starts",
       uploadUserWaiting: "move:upload_user_waiting",
+      result: "move:result",
     },
     predefined: {
       connection: "connection",
@@ -30,6 +31,7 @@ const configs = {
     minimumPlayers: 1,
     playersPerRoom: 2,
     handNames: ["scissors", "paper", "rock"],
+    results: ["win", "draw", "lose"],
   },
 } as const;
 

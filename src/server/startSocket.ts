@@ -15,7 +15,7 @@ const startSocket = (server: http.Server) => {
   });
 
   io.on(eventNames.predefined.connection, (socket: SocketWithData) => {
-    onConnectionSocket(socket);
+    onConnectionSocket(io, socket);
   });
 };
 

@@ -1,6 +1,9 @@
+import { HydratedDocument } from "mongoose";
+import { Server as SocketServer } from "socket.io";
 import configs from "../../configs/configs";
 import moveServices from "../../services/moveServices";
-import { HandNames, SocketWithData } from "../../types/interfaces";
+import { HandNames, RoomWithId, SocketWithData } from "../../types/interfaces";
+import getPlayResult from "../../utils/game-utils";
 import isValidHandName from "../../utils/validation-utils";
 import generalErrorHandler from "./generalErrorHandler";
 
@@ -65,4 +68,33 @@ export const isStartedHandler = async (socket: SocketWithData) => {
       "handlers:is-ready"
     );
   }
+};
+
+export const moveResultHandler = async (
+  io: SocketServer,
+  socket: SocketWithData
+) => {
+  let readyToResult: HydratedDocument<RoomWithId>;
+  try {
+    readyToResult = await moveServices.updateReadyToResult(
+      socket.data.activeRoomId
+    );
+  } catch (error) {
+    generalErrorHandler(
+      socket,
+      `There was an error getting ${socket.data.activeRoomId} room to check if it's ready for result: ${error.message}`,
+      "handlers:result"
+    );
+  }
+
+  if (!readyToResult) return;
+
+  const user1 = readyToResult.currentHands[0];
+  const user2 = readyToResult.currentHands[1];
+
+  const user1Result = getPlayResult(user1.currentHand, user2.currentHand);
+  const user2Result = getPlayResult(user2.currentHand, user1.currentHand);
+
+  io.to(user1.userId).emit(eventNames.move.result, user1Result);
+  io.to(user2.userId).emit(eventNames.move.result, user2Result);
 };
