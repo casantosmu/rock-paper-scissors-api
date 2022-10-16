@@ -37,19 +37,25 @@ const uploadIsStarted = async (roomId: string) => {
   return Room.findOneAndUpdate(filter, update);
 };
 
-const getReadyToResult = async (roomId: string) => {
+const updateReadyToResult = async (roomId: string) => {
   const filter: FilterQuery<RoomWithId> = {
     _id: roomId,
     isStarted: true,
     [`currentHands.${gameSettings.playersPerRoom - 1}`]: { $exists: true },
   };
+  const update: UpdateQuery<RoomWithId> = {
+    $set: {
+      isStarted: false,
+      currentHands: [],
+    },
+  };
 
-  return Room.findOne(filter);
+  return Room.findOneAndUpdate(filter, update);
 };
 
 export default {
   addUserWaiting,
   addCurrentHand,
   uploadIsStarted,
-  getReadyToResult,
+  updateReadyToResult,
 };
