@@ -1,10 +1,12 @@
 import chalk from "chalk";
 import Debug from "debug";
+import { Server as SocketServer } from "socket.io";
 import configs from "../configs/configs";
 import { HandNames, SocketWithData } from "../types/interfaces";
 import {
   addUserWaitingHandler,
   isStartedHandler,
+  moveResultHandler,
   uploadHandHandler,
 } from "./handlers/moveHandlers";
 import {
@@ -14,7 +16,7 @@ import {
 
 const { eventNames } = configs;
 
-const onConnectionSocket = (socket: SocketWithData) => {
+const onConnectionSocket = (io: SocketServer, socket: SocketWithData) => {
   const debug = Debug("rock-paper-scissors:on-connection-socket");
 
   debug(chalk.blue(`New socket connected: ${socket.id}`));
@@ -28,9 +30,10 @@ const onConnectionSocket = (socket: SocketWithData) => {
     isStartedHandler(socket);
   });
 
-  socket.on(eventNames.hand.update, (handName: HandNames) =>
-    uploadHandHandler(socket, handName)
-  );
+  socket.on(eventNames.hand.update, async (handName: HandNames) => {
+    await uploadHandHandler(socket, handName);
+    moveResultHandler(io, socket);
+  });
 
   socket.on(eventNames.predefined.disconnect, () => {
     disconnectRoomHandler(socket);

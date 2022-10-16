@@ -20,6 +20,7 @@ const configs = {
     move: {
       starts: "move:starts",
       uploadUserWaiting: "move:upload_user_waiting",
+      result: "move:result",
     },
     predefined: {
       connection: "connection",
