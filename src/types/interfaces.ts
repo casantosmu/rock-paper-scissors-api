@@ -2,6 +2,7 @@ import { Socket } from "socket.io";
 import configs from "../configs/configs";
 
 export type HandNames = typeof configs.gameSettings.handNames[number];
+export type ResultsTypes = typeof configs.gameSettings.results[number];
 
 type CurrentHand = {
   userId: string;

@@ -30,6 +30,7 @@ const configs = {
     minimumPlayers: 1,
     playersPerRoom: 2,
     handNames: ["scissors", "paper", "rock"],
+    results: ["win", "draw", "lose"],
   },
 } as const;
 
